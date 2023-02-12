@@ -2,8 +2,16 @@
 
 
 int main() {
-	constexpr Point<float> px{ 1.f, 2.f, 1.f };
+	constexpr Point<float> p;
+	constexpr Point<float> px{ 1.f, 0.f, 0.f };
 
-	std::cout << px;
+	Vector<float> res{ p - px };
+
+	std::cout << res;
 	std::cout << std::endl;
+
+	std::cout << px.abs();
+
+	std::cout << "\n";
+	std::cout << res.magnitude();
 }
