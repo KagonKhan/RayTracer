@@ -14,6 +14,7 @@ private:
 	inline static constexpr std::size_t dim{ Dimension * Dimension };
 	std::array<T, dim> data;
 
+    // TODO: Convert to multi-dim sub operator when available
 	inline static constexpr std::size_t mapIndex(const std::size_t row, const std::size_t col) {
 		return Dimension * row + col;
 	}
@@ -37,25 +38,25 @@ public:
         // Mayrhs.datae transposing will rhs.datae faster,
         // or mayrhs.datae just dispatch to different algorithms
         if constexpr (Dimension == 4) {
-            T v1 = data[0, 0] * rhs.data[0, 0] + data[0, 1] * rhs.data[1, 0] + data[0, 2] * rhs.data[2, 0] + data[0, 3] * rhs.data[3, 0];
-            T v2 = data[0, 0] * rhs.data[0, 1] + data[0, 1] * rhs.data[1, 1] + data[0, 2] * rhs.data[2, 1] + data[0, 3] * rhs.data[3, 1];
-            T v3 = data[0, 0] * rhs.data[0, 2] + data[0, 1] * rhs.data[1, 2] + data[0, 2] * rhs.data[2, 2] + data[0, 3] * rhs.data[3, 2];
-            T v4 = data[0, 0] * rhs.data[0, 3] + data[0, 1] * rhs.data[1, 3] + data[0, 2] * rhs.data[2, 3] + data[0, 3] * rhs.data[3, 3];
-
-            T v5 = data[1, 0] * rhs.data[0, 0] + data[1, 1] * rhs.data[1, 0] + data[1, 2] * rhs.data[2, 0] + data[1, 3] * rhs.data[3, 0];
-            T v6 = data[1, 0] * rhs.data[0, 1] + data[1, 1] * rhs.data[1, 1] + data[1, 2] * rhs.data[2, 1] + data[1, 3] * rhs.data[3, 1];
-            T v7 = data[1, 0] * rhs.data[0, 2] + data[1, 1] * rhs.data[1, 2] + data[1, 2] * rhs.data[2, 2] + data[1, 3] * rhs.data[3, 2];
-            T v8 = data[1, 0] * rhs.data[0, 3] + data[1, 1] * rhs.data[1, 3] + data[1, 2] * rhs.data[2, 3] + data[1, 3] * rhs.data[3, 3];
-
-            T v9 = data[2, 0] * rhs.data[0, 0] + data[2, 1] * rhs.data[1, 0] + data[2, 2] * rhs.data[2, 0] + data[2, 3] * rhs.data[3, 0];
-            T v10 = data[2, 0] * rhs.data[0, 1] + data[2, 1] * rhs.data[1, 1] + data[2, 2] * rhs.data[2, 1] + data[2, 3] * rhs.data[3, 1];
-            T v11 = data[2, 0] * rhs.data[0, 2] + data[2, 1] * rhs.data[1, 2] + data[2, 2] * rhs.data[2, 2] + data[2, 3] * rhs.data[3, 2];
-            T v12 = data[2, 0] * rhs.data[0, 3] + data[2, 1] * rhs.data[1, 3] + data[2, 2] * rhs.data[2, 3] + data[2, 3] * rhs.data[3, 3];
-
-            T v13 = data[3, 0] * rhs.data[0, 0] + data[3, 1] * rhs.data[1, 0] + data[3, 2] * rhs.data[2, 0] + data[3, 3] * rhs.data[3, 0];
-            T v14 = data[3, 0] * rhs.data[0, 1] + data[3, 1] * rhs.data[1, 1] + data[3, 2] * rhs.data[2, 1] + data[3, 3] * rhs.data[3, 1];
-            T v15 = data[3, 0] * rhs.data[0, 2] + data[3, 1] * rhs.data[1, 2] + data[3, 2] * rhs.data[2, 2] + data[3, 3] * rhs.data[3, 2];
-            T v16 = data[3, 0] * rhs.data[0, 3] + data[3, 1] * rhs.data[1, 3] + data[3, 2] * rhs.data[2, 3] + data[3, 3] * rhs.data[3, 3];
+            T v1  = data[mapIndex(0, 0)] * rhs.data[mapIndex(0, 0)] + data[mapIndex(0, 1)] * rhs.data[mapIndex(1, 0)] + data[mapIndex(0, 2)] * rhs.data[mapIndex(2, 0)] + data[mapIndex(0, 3)] * rhs.data[mapIndex(3, 0)];
+            T v2 = data[mapIndex(0, 0)] * rhs.data[mapIndex(0, 1)] + data[mapIndex(0, 1)] * rhs.data[mapIndex(1, 1)] + data[mapIndex(0, 2)] * rhs.data[mapIndex(2, 1)] + data[mapIndex(0, 3)] * rhs.data[mapIndex(3, 1)];
+            T v3 = data[mapIndex(0, 0)] * rhs.data[mapIndex(0, 2)] + data[mapIndex(0, 1)] * rhs.data[mapIndex(1, 2)] + data[mapIndex(0, 2)] * rhs.data[mapIndex(2, 2)] + data[mapIndex(0, 3)] * rhs.data[mapIndex(3, 2)];
+            T v4 = data[mapIndex(0, 0)] * rhs.data[mapIndex(0, 3)] + data[mapIndex(0, 1)] * rhs.data[mapIndex(1, 3)] + data[mapIndex(0, 2)] * rhs.data[mapIndex(2, 3)] + data[mapIndex(0, 3)] * rhs.data[mapIndex(3, 3)];
+            
+            T v5 = data[mapIndex(1, 0)] * rhs.data[mapIndex(0, 0)] + data[mapIndex(1, 1)] * rhs.data[mapIndex(1, 0)] + data[mapIndex(1, 2)] * rhs.data[mapIndex(2, 0)] + data[mapIndex(1, 3)] * rhs.data[mapIndex(3, 0)];
+            T v6 = data[mapIndex(1, 0)] * rhs.data[mapIndex(0, 1)] + data[mapIndex(1, 1)] * rhs.data[mapIndex(1, 1)] + data[mapIndex(1, 2)] * rhs.data[mapIndex(2, 1)] + data[mapIndex(1, 3)] * rhs.data[mapIndex(3, 1)];
+            T v7 = data[mapIndex(1, 0)] * rhs.data[mapIndex(0, 2)] + data[mapIndex(1, 1)] * rhs.data[mapIndex(1, 2)] + data[mapIndex(1, 2)] * rhs.data[mapIndex(2, 2)] + data[mapIndex(1, 3)] * rhs.data[mapIndex(3, 2)];
+            T v8 = data[mapIndex(1, 0)] * rhs.data[mapIndex(0, 3)] + data[mapIndex(1, 1)] * rhs.data[mapIndex(1, 3)] + data[mapIndex(1, 2)] * rhs.data[mapIndex(2, 3)] + data[mapIndex(1, 3)] * rhs.data[mapIndex(3, 3)];
+            
+            T v9 = data[mapIndex(2, 0)] * rhs.data[mapIndex(0, 0)] + data[mapIndex(2, 1)] * rhs.data[mapIndex(1, 0)] + data[mapIndex(2, 2)] * rhs.data[mapIndex(2, 0)] + data[mapIndex(2, 3)] * rhs.data[mapIndex(3, 0)];
+            T v10 = data[mapIndex(2, 0)] * rhs.data[mapIndex(0, 1)] + data[mapIndex(2, 1)] * rhs.data[mapIndex(1, 1)] + data[mapIndex(2, 2)] * rhs.data[mapIndex(2, 1)] + data[mapIndex(2, 3)] * rhs.data[mapIndex(3, 1)];
+            T v11 = data[mapIndex(2, 0)] * rhs.data[mapIndex(0, 2)] + data[mapIndex(2, 1)] * rhs.data[mapIndex(1, 2)] + data[mapIndex(2, 2)] * rhs.data[mapIndex(2, 2)] + data[mapIndex(2, 3)] * rhs.data[mapIndex(3, 2)];
+            T v12 = data[mapIndex(2, 0)] * rhs.data[mapIndex(0, 3)] + data[mapIndex(2, 1)] * rhs.data[mapIndex(1, 3)] + data[mapIndex(2, 2)] * rhs.data[mapIndex(2, 3)] + data[mapIndex(2, 3)] * rhs.data[mapIndex(3, 3)];
+           
+            T v13 = data[mapIndex(3, 0)] * rhs.data[mapIndex(0, 0)] + data[mapIndex(3, 1)] * rhs.data[mapIndex(1, 0)] + data[mapIndex(3, 2)] * rhs.data[mapIndex(2, 0)] + data[mapIndex(3, 3)] * rhs.data[mapIndex(3, 0)];
+            T v14 = data[mapIndex(3, 0)] * rhs.data[mapIndex(0, 1)] + data[mapIndex(3, 1)] * rhs.data[mapIndex(1, 1)] + data[mapIndex(3, 2)] * rhs.data[mapIndex(2, 1)] + data[mapIndex(3, 3)] * rhs.data[mapIndex(3, 1)];
+            T v15 = data[mapIndex(3, 0)] * rhs.data[mapIndex(0, 2)] + data[mapIndex(3, 1)] * rhs.data[mapIndex(1, 2)] + data[mapIndex(3, 2)] * rhs.data[mapIndex(2, 2)] + data[mapIndex(3, 3)] * rhs.data[mapIndex(3, 2)];
+            T v16 = data[mapIndex(3, 0)] * rhs.data[mapIndex(0, 3)] + data[mapIndex(3, 1)] * rhs.data[mapIndex(1, 3)] + data[mapIndex(3, 2)] * rhs.data[mapIndex(2, 3)] + data[mapIndex(3, 3)] * rhs.data[mapIndex(3, 3)];
 
             return { v1, v2, v3, v4,
                 v5, v6, v7, v8,
@@ -64,17 +65,17 @@ public:
         }
 
         if constexpr (Dimension == 3) {
-            T v1 = data[0, 0] * rhs.data[0, 0] + data[0, 1] * rhs.data[1, 0] + data[0, 2] * rhs.data[2, 0];
-            T v2 = data[0, 0] * rhs.data[0, 1] + data[0, 1] * rhs.data[1, 1] + data[0, 2] * rhs.data[2, 1];
-            T v3 = data[0, 0] * rhs.data[0, 2] + data[0, 1] * rhs.data[1, 2] + data[0, 2] * rhs.data[2, 2];
-
-            T v4 = data[1, 0] * rhs.data[0, 0] + data[1, 1] * rhs.data[1, 0] + data[1, 2] * rhs.data[2, 0];
-            T v5 = data[1, 0] * rhs.data[0, 1] + data[1, 1] * rhs.data[1, 1] + data[1, 2] * rhs.data[2, 1];
-            T v6 = data[1, 0] * rhs.data[0, 2] + data[1, 1] * rhs.data[1, 2] + data[1, 2] * rhs.data[2, 2];
-
-            T v7 = data[2, 0] * rhs.data[0, 0] + data[2, 1] * rhs.data[1, 0] + data[2, 2] * rhs.data[2, 0];
-            T v8 = data[2, 0] * rhs.data[0, 1] + data[2, 1] * rhs.data[1, 1] + data[2, 2] * rhs.data[2, 1];
-            T v9 = data[2, 0] * rhs.data[0, 2] + data[2, 1] * rhs.data[1, 2] + data[2, 2] * rhs.data[2, 2];
+            T v1 = data[mapIndex(0, 0)] * rhs.data[mapIndex(0, 0)] + data[mapIndex(0, 1)] * rhs.data[mapIndex(1, 0)] + data[mapIndex(0, 2)] * rhs.data[mapIndex(2, 0)];
+            T v2 = data[mapIndex(0, 0)] * rhs.data[mapIndex(0, 1)] + data[mapIndex(0, 1)] * rhs.data[mapIndex(1, 1)] + data[mapIndex(0, 2)] * rhs.data[mapIndex(2, 1)];
+            T v3 = data[mapIndex(0, 0)] * rhs.data[mapIndex(0, 2)] + data[mapIndex(0, 1)] * rhs.data[mapIndex(1, 2)] + data[mapIndex(0, 2)] * rhs.data[mapIndex(2, 2)];
+            
+            T v4 = data[mapIndex(1, 0)] * rhs.data[mapIndex(0, 0)] + data[mapIndex(1, 1)] * rhs.data[mapIndex(1, 0)] + data[mapIndex(1, 2)] * rhs.data[mapIndex(2, 0)];
+            T v5 = data[mapIndex(1, 0)] * rhs.data[mapIndex(0, 1)] + data[mapIndex(1, 1)] * rhs.data[mapIndex(1, 1)] + data[mapIndex(1, 2)] * rhs.data[mapIndex(2, 1)];
+            T v6 = data[mapIndex(1, 0)] * rhs.data[mapIndex(0, 2)] + data[mapIndex(1, 1)] * rhs.data[mapIndex(1, 2)] + data[mapIndex(1, 2)] * rhs.data[mapIndex(2, 2)];
+            
+            T v7 = data[mapIndex(2, 0)] * rhs.data[mapIndex(0, 0)] + data[mapIndex(2, 1)] * rhs.data[mapIndex(1, 0)] + data[mapIndex(2, 2)] * rhs.data[mapIndex(2, 0)];
+            T v8 = data[mapIndex(2, 0)] * rhs.data[mapIndex(0, 1)] + data[mapIndex(2, 1)] * rhs.data[mapIndex(1, 1)] + data[mapIndex(2, 2)] * rhs.data[mapIndex(2, 1)];
+            T v9 = data[mapIndex(2, 0)] * rhs.data[mapIndex(0, 2)] + data[mapIndex(2, 1)] * rhs.data[mapIndex(1, 2)] + data[mapIndex(2, 2)] * rhs.data[mapIndex(2, 2)];
 
             return { v1, v2, v3,
                      v4, v5, v6,
@@ -82,11 +83,11 @@ public:
         }
 
         if constexpr (Dimension == 2) {
-            T v1 = data[0, 0] * rhs.data[0, 0] + data[0, 1] * rhs.data[1, 0];
-            T v2 = data[0, 0] * rhs.data[0, 1] + data[0, 1] * rhs.data[1, 1];
-
-            T v3 = data[1, 0] * rhs.data[0, 0] + data[1, 1] * rhs.data[1, 0];
-            T v4 = data[1, 0] * rhs.data[0, 1] + data[1, 1] * rhs.data[1, 1];
+            T v1 = data[mapIndex(0, 0)] * rhs.data[mapIndex(0, 0)] + data[mapIndex(0, 1)] * rhs.data[mapIndex(1, 0)];
+            T v2 = data[mapIndex(0, 0)] * rhs.data[mapIndex(0, 1)] + data[mapIndex(0, 1)] * rhs.data[mapIndex(1, 1)];
+            
+            T v3 = data[mapIndex(1, 0)] * rhs.data[mapIndex(0, 0)] + data[mapIndex(1, 1)] * rhs.data[mapIndex(1, 0)];
+            T v4 = data[mapIndex(1, 0)] * rhs.data[mapIndex(0, 1)] + data[mapIndex(1, 1)] * rhs.data[mapIndex(1, 1)];
 
             return { v1, v2,
                      v3, v4 };
@@ -94,19 +95,19 @@ public:
     }
 
     constexpr Vector<T> operator *(Vector<T> const& rhs) const noexcept {
-        T v1 = data[0, 0] * rhs.data[0] + data[0, 1] * rhs.data[1] + data[0, 2] * rhs.data[2] + data[0, 3] * rhs.data[3];
-        T v2 = data[1, 0] * rhs.data[0] + data[1, 1] * rhs.data[1] + data[1, 2] * rhs.data[2] + data[1, 3] * rhs.data[3];
-        T v3 = data[2, 0] * rhs.data[0] + data[2, 1] * rhs.data[1] + data[2, 2] * rhs.data[2] + data[2, 3] * rhs.data[3];
-        T v4 = data[3, 0] * rhs.data[0] + data[3, 1] * rhs.data[1] + data[3, 2] * rhs.data[2] + data[3, 3] * rhs.data[3];
+        T v1 = data[mapIndex(0, 0)] * rhs.data[0] + data[mapIndex(0, 1)] * rhs.data[1] + data[mapIndex(0, 2)] * rhs.data[2] + data[mapIndex(0, 3)] * rhs.data[3];
+        T v2 = data[mapIndex(1, 0)] * rhs.data[0] + data[mapIndex(1, 1)] * rhs.data[1] + data[mapIndex(1, 2)] * rhs.data[2] + data[mapIndex(1, 3)] * rhs.data[3];
+        T v3 = data[mapIndex(2, 0)] * rhs.data[0] + data[mapIndex(2, 1)] * rhs.data[1] + data[mapIndex(2, 2)] * rhs.data[2] + data[mapIndex(2, 3)] * rhs.data[3];
+        T v4 = data[mapIndex(3, 0)] * rhs.data[0] + data[mapIndex(3, 1)] * rhs.data[1] + data[mapIndex(3, 2)] * rhs.data[2] + data[mapIndex(3, 3)] * rhs.data[3];
 
         return { v1, v2, v3, v4 };
     }
 
     constexpr Point<T> operator *(Point<T> const& rhs) const noexcept {
-        T v1 = data[0, 0] * rhs.data[0] + data[0, 1] * rhs.data[1] + data[0, 2] * rhs.data[2] + data[0, 3] * rhs.data[3];
-        T v2 = data[1, 0] * rhs.data[0] + data[1, 1] * rhs.data[1] + data[1, 2] * rhs.data[2] + data[1, 3] * rhs.data[3];
-        T v3 = data[2, 0] * rhs.data[0] + data[2, 1] * rhs.data[1] + data[2, 2] * rhs.data[2] + data[2, 3] * rhs.data[3];
-        T v4 = data[3, 0] * rhs.data[0] + data[3, 1] * rhs.data[1] + data[3, 2] * rhs.data[2] + data[3, 3] * rhs.data[3];
+        T v1 = data[mapIndex(0, 0)] * rhs.data[0] + data[mapIndex(0, 1)] * rhs.data[1] + data[mapIndex(0, 2)] * rhs.data[2] + data[mapIndex(0, 3)] * rhs.data[3];
+        T v2 = data[mapIndex(1, 0)] * rhs.data[0] + data[mapIndex(1, 1)] * rhs.data[1] + data[mapIndex(1, 2)] * rhs.data[2] + data[mapIndex(1, 3)] * rhs.data[3];
+        T v3 = data[mapIndex(2, 0)] * rhs.data[0] + data[mapIndex(2, 1)] * rhs.data[1] + data[mapIndex(2, 2)] * rhs.data[2] + data[mapIndex(2, 3)] * rhs.data[3];
+        T v4 = data[mapIndex(3, 0)] * rhs.data[0] + data[mapIndex(3, 1)] * rhs.data[1] + data[mapIndex(3, 2)] * rhs.data[2] + data[mapIndex(3, 3)] * rhs.data[3];
 
         return { v1, v2, v3, v4 };
     }
@@ -156,61 +157,48 @@ public:
         }
     }
 
-    /*
-    // unoptimized
-
-
-    public Mat4 Translated(double x, double y, double z)
-    {
-        return this * new Mat4(1, 0, 0, x,
-            0, 1, 0, y,
-            0, 0, 1, z,
-            0, 0, 0, 1);
+    // TODO: Enable if dim 4
+    constexpr Matrix<T, Dimension> Translated(double x, double y, double z) const noexcept {
+        return *this * Matrix<T, 4>{1, 0, 0, x,
+                                    0, 1, 0, y,
+                                    0, 0, 1, z,
+                                    0, 0, 0, 1};
     }
-    public Mat4 Scaled(double x, double y, double z)
-    {
-        return this * new Mat4(x, 0, 0, 0,
-            0, y, 0, 0,
-            0, 0, z, 0,
-            0, 0, 0, 1);
+    constexpr Matrix<T, Dimension> Scaled(double x, double y, double z) const noexcept {
+        return *this * Matrix<T, 4>{x, 0, 0, 0,
+                                    0, y, 0, 0,
+                                    0, 0, z, 0,
+                                    0, 0, 0, 1};
     }
-    public Mat4 Sheared(double Xy = 0, double Xz = 0, double Yx = 0, double Yz = 0, double Zx = 0, double Zy = 0)
-    {
-        return this * new Mat4(1, Xy, Xz, 0,
-            Yx, 1, Yz, 0,
-            Zx, Zy, 1, 0,
-            0, 0, 0, 1);
+    constexpr Matrix<T, Dimension> Sheared(double Xy = 0, double Xz = 0, double Yx = 0, double Yz = 0, double Zx = 0, double Zy = 0) const noexcept {
+        return *this * Matrix<T, 4>{1, Xy, Xz, 0,
+                                    Yx, 1, Yz, 0,
+                                    Zx, Zy, 1, 0,
+                                    0, 0, 0, 1};
     }
-    public Mat4 RotatedX(double r)
-    {
-        double c = Math.Cos(r), s = Math.Sin(r);
+    constexpr Matrix<T, Dimension> RotatedX(double r) const noexcept {
+        double c = std::cos(r), s = std::sin(r);
 
-        return this * new Mat4(1, 0, 0, 0,
-            0, c, -s, 0,
-            0, s, c, 0,
-            0, 0, 0, 1);
+        return *this * Matrix<T, 4>{1, 0, 0, 0,
+                                    0, c, -s, 0,
+                                    0, s, c, 0,
+                                    0, 0, 0, 1};
     }
-    public Mat4 RotatedY(double r)
-    {
-        double c = Math.Cos(r), s = Math.Sin(r);
+    constexpr Matrix<T, Dimension> RotatedY(double r) const noexcept {
+        double c = std::cos(r), s = std::sin(r);
 
-        return this * new Mat4(c, 0, s, 0,
-            0, 1, 0, 0,
-            -s, 0, c, 0,
-            0, 0, 0, 1);
+        return *this * Matrix<T, 4>{c, 0, s, 0,
+                                    0, 1, 0, 0,
+                                    -s, 0, c, 0,
+                                    0, 0, 0, 1};
     }
-    public Mat4 RotatedZ(double r)
-    {
-        double c = Math.Cos(r), s = Math.Sin(r);
+    constexpr Matrix<T, Dimension> RotatedZ(double r) const noexcept {
+        double c = std::cos(r), s = std::sin(r);
 
-        return this * new Mat4(c, -s, 0, 0,
-            s, c, 0, 0,
-            0, 0, 1, 0,
-            0, 0, 0, 1);
+        return *this * Matrix<T, 4>{c, -s, 0, 0,
+                                    s, c, 0, 0,
+                                    0, 0, 1, 0,
+                                    0, 0, 0, 1};
     }
-
-
-    */
-
 
 };
