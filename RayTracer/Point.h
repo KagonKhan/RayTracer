@@ -7,6 +7,11 @@
 #include <array>
 #include <iostream>
 
+
+
+// TODO: __m256d vectorize
+
+
 template <typename T>
 class Point {
 private:

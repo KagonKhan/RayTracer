@@ -25,7 +25,6 @@ public:
     constexpr Color<T> operator *(double scalar) const noexcept {
         return { data[0] * scalar, data[1] * scalar, data[2] * scalar };
     }
-
     constexpr Color<T> operator *(Color<T> const& rhs) const noexcept {
         return { data[0] * rhs.data[0], data[1] * rhs.data[1], data[2] * rhs.data[2] };
     }
