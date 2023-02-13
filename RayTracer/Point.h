@@ -27,6 +27,8 @@ public:
 		return os;
 	}
 
+	constexpr auto operator<=>(Point<T> const&) const noexcept = default;
+
 	constexpr Vector<T> operator- (Point<T> const& rhs) const noexcept {
 		return { data[0] - rhs.data[0], data[1] - rhs.data[1], data[2] - rhs.data[2], data[3] - rhs.data[3] };
 	}
@@ -44,8 +46,6 @@ public:
     constexpr Point<T> operator -() const noexcept {
 		return { -data[0], -data[1], -data[2], -data[3] };
     }
-
-	constexpr auto operator<=>(Point<T> const&) const noexcept = default;
 
 	constexpr Point<T> abs() const noexcept {
 		return { std::abs(data[0]), std::abs(data[1]), std::abs(data[2]), std::abs(data[3]) };

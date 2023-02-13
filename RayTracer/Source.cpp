@@ -18,11 +18,26 @@ int main() {
 	//std::cout << res.magnitude();
 
 
-	Matrix<float, 4> m4;
-	Matrix<float, 3> m3{1.f, 2.f, 3.f, 4.f, 5.f, 6.f, 7.f, 8.f, 9.f};
-	constexpr Matrix<float, 2> m2{1.f,2.f,3.f,4.f};
+	   
+		
+		
+		
 
-	std::cout << m4 << "\n\n" << m3 << "\n\n" << m2 << "\n";
+
+
+	Matrix<double, 4> m{ -5.0, 2.0,  6.0, -8.0,
+						  1.0, -5.0,  1.0,  8.0,
+						  7.0,  7.0, -6.0, -7.0,
+						  1.0, -3.0,  7.0,  4.0 };
+	auto mI = m.Inversed();
+
+	Matrix<double, 4> mIE{  0.21805,  0.45113,  0.24060, -0.04511,
+						  -0.80827, -1.45677, -0.44361,  0.52068,
+						  -0.07895, -0.22368, -0.05263,  0.19737,
+						  -0.52256, -0.81391, -0.30075,  0.30639 };
+
+	std::cout << "Expected:\n" << mIE << "\n Actual:\n" << mI;
+
 
 	__m256d test;
 }
