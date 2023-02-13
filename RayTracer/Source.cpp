@@ -26,7 +26,7 @@ int main() {
 		// 16ms constexpr
 	auto t1 = std::chrono::high_resolution_clock::now();
 
-	for (int i = 0; i < 100'000'000; ++i) {
+	for (unsigned long long i = 0; i < 4'000'000'000; ++i) {
 		constexpr Matrix<double, 4> m{ -5.0, 2.0,  6.0, -8.0,
 							  1.0, -5.0,  1.0,  8.0,
 							  7.0,  7.0, -6.0, -7.0,
