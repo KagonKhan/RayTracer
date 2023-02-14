@@ -69,7 +69,7 @@ class Intersection {
         this.t = t;
     }
 
-    static Intersection Hit(List<Intersection> xs) {
+    constexpr static Intersection Hit(List<Intersection> xs) const noexcept {
         if (xs == null) return null;
 
 
@@ -82,7 +82,7 @@ class Intersection {
         return null;
     }
 
-    public Computations Compute(in Ray r, List<Intersection> xs) {
+    constexpr Computations Compute(in Ray r, List<Intersection> xs) const noexcept {
 
         Point pos = r.position(t);
         Vector norm = obj.NormalAt(pos);
@@ -136,24 +136,26 @@ class Intersection {
     }
 };
 
+#include <vector>
+#include <memory>
+#include "Objects.h"
+#include "Light.h"
 
+
+template<typename T>
 class World {
     const int depth = 5;
 
     // Possibly a dictionary with IDs
-    public LinkedList<HitObject> objects = new LinkedList<HitObject>();
-    public List<Light> lights = new List<Light>();
+    std::vector<std::unique_ptr<HitObject>> objects;
+    std::vector<std::unique_ptr<Light>> lights;
 
-    public World(HitObject[] objs)
-    {
-        for (int i = 0; i < objs.Length; i++)
-            objects.AddLast(objs[i]);
-    }
-    public World()
-    {
-        PointLight light = new PointLight(new Point(-10, 10, -10), new Color(1, 1, 1));
-        Sphere s1 = new Sphere();
-        Sphere s2 = new Sphere();
+    constexpr World(std::vector<std::unique_ptr<HitObject>> objects) noexcept : objects(std::move(objects)) {   }
+
+    constexpr World() noexcept {
+        PointLight<T>* light = new PointLight<T>(Point<T>{-10, 10, -10}, Color<T>{1, 1, 1});
+        Sphere<T>* s1 = new Sphere();
+        Sphere<T>* s2 = new Sphere();
 
         s1.material.color = new Color(0.8f, 1.0f, 0.6f);
         s1.material.diffuse = 0.7f;
@@ -168,13 +170,10 @@ class World {
     }
 
 
-
-    public List<Intersection> Intersect(in Ray r)
-    {
-        List<Intersection> retVal = new List<Intersection>();
-        foreach(HitObject item in objects)
-        {
-            List<Intersection> xs = item.IntersectionsWith(r);
+    constexpr std::vector<Intersection> Intersect(Ray r) const noexcept {
+        std::vector<Intersection> retVal;
+        for(auto item : objects) {
+            std::vector<Intersection> xs = item.IntersectionsWith(r);
             if (xs.Count != 0)
                 retVal.AddRange(xs);
         }
@@ -183,26 +182,23 @@ class World {
         return retVal;
     }
 
-    public Color Shading(in Computations comp, int remaining)
-    {
+    constexpr Color Shading(in Computations comp, int remaining) const noexcept {
         Color retVal = Color.Black;
 
-        int lightIndex = 0;
-        foreach(Light light in lights)
-        {
+        
+        for (int lightIndex = 0; auto light : lights) {
             bool shaded = IsShadowed(comp.over_point, lightIndex);
             retVal += light.Lighting(comp.obj.material, comp.obj, comp.point, comp.eye, comp.normal, shaded);
 
             lightIndex++;
         }
 
-        Color reflected = ReflectiveShading(comp, remaining);
-        Color refracted = RefractiveShading(comp, remaining);
+        Color<T> reflected = ReflectiveShading(comp, remaining);
+        Color<T> refracted = RefractiveShading(comp, remaining);
 
-        Material mat = comp.obj.material;
+        Material<T> mat = comp.obj.material;
 
-        if (mat.reflective > 0 && mat.transparency > 0)
-        {
+        if (mat.reflective > 0 && mat.transparency > 0) {
             double reflectance = comp.Schlick();
             return retVal + (reflected * reflectance) + (refracted * (1 - reflectance));
         }

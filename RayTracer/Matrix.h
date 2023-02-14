@@ -8,6 +8,7 @@
 
 // TODO: namespace Math with constants and free functions
 // TODO: need copy ctors?
+
 template <typename T, std::size_t Dimension>
 class Matrix {
 private:
@@ -18,7 +19,7 @@ private:
 	inline static constexpr std::size_t mapIndex(const std::size_t row, const std::size_t col) {
 		return Dimension * row + col;
 	}
-public:
+public: 
 	constexpr Matrix() noexcept : data{ } { }
     template <typename... Ts> constexpr Matrix(Ts&&... ts) noexcept : data{ std::forward<Ts>(ts)... } {}
 	
@@ -201,4 +202,8 @@ public:
                                     0, 0, 0, 1};
     }
 
+    inline static constexpr Matrix<T, 4> I{ 1, 0, 0, 0,
+                                            0, 1, 0, 0,
+                                            0, 0, 1, 0,
+                                            0, 0, 0, 1 };
 };

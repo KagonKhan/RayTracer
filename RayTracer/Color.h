@@ -1,12 +1,15 @@
 #pragma once
 #include <array>
 #include <algorithm>
+
 template <typename T>
 class Color {
 private:
     std::array<T, 3> data;
 
 public:
+    using namespace Constants;
+
     constexpr Color() noexcept : data{ 0, 0, 0 } { }
     constexpr Color(T r = 0, T g = 0, T b = 0) noexcept : data{ r, g, b } { }
 
@@ -34,21 +37,27 @@ public:
     }
 
     constexpr auto operator<=>(Color<T> const&) const noexcept = default;
-
-    inline static constexpr Color Black{ 0, 0, 0 };
-    inline static constexpr Color White{ 255, 255, 255 };
-    inline static constexpr Color Red{ 255, 0, 0 };
-    inline static constexpr Color Lime{ 0, 255, 0 };
-    inline static constexpr Color Blue{ 0, 0, 255 };
-    inline static constexpr Color Yellow{ 255, 255, 0 };
-    inline static constexpr Color Cyan{ 0, 255, 255 };
-    inline static constexpr Color Magenta{ 255, 0, 255 };
-    inline static constexpr Color Silver{ 192, 192, 192 };
-    inline static constexpr Color Gray{ 128, 128, 128 };
-    inline static constexpr Color Maroon{ 128, 0, 0 };
-    inline static constexpr Color Olive{ 128, 128, 0 };
-    inline static constexpr Color Green{ 0, 128, 0 };
-    inline static constexpr Color Purple{ 128, 0, 128 };
-    inline static constexpr Color Teal{ 0, 128, 128 };
-    inline static constexpr Color Navy{ 0, 0, 128 };
 };
+
+
+
+
+
+namespace Constants {
+    template <typename T> inline static constexpr Color<T> Black{ 0, 0, 0 };
+    template <typename T> inline static constexpr Color<T> White{ 255, 255, 255 };
+    template <typename T> inline static constexpr Color<T> Red{ 255, 0, 0 };
+    template <typename T> inline static constexpr Color<T> Lime{ 0, 255, 0 };
+    template <typename T> inline static constexpr Color<T> Blue{ 0, 0, 255 };
+    template <typename T> inline static constexpr Color<T> Yellow{ 255, 255, 0 };
+    template <typename T> inline static constexpr Color<T> Cyan{ 0, 255, 255 };
+    template <typename T> inline static constexpr Color<T> Magenta{ 255, 0, 255 };
+    template <typename T> inline static constexpr Color<T> Silver{ 192, 192, 192 };
+    template <typename T> inline static constexpr Color<T> Gray{ 128, 128, 128 };
+    template <typename T> inline static constexpr Color<T> Maroon{ 128, 0, 0 };
+    template <typename T> inline static constexpr Color<T> Olive{ 128, 128, 0 };
+    template <typename T> inline static constexpr Color<T> Green{ 0, 128, 0 };
+    template <typename T> inline static constexpr Color<T> Purple{ 128, 0, 128 };
+    template <typename T> inline static constexpr Color<T> Teal{ 0, 128, 128 };
+    template <typename T> inline static constexpr Color<T> Navy{ 0, 0, 128 };
+}

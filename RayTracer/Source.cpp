@@ -1,5 +1,4 @@
 #include "Point.h"
-#include "Matrix.h"
 
 #include <intrin.h>
 #include <chrono>
@@ -20,11 +19,12 @@ int main() {
 
 
 	   
-		
+	Point p{ 1,0,1 };
+	std::cout << p;
 		
 		//3.2 seconds pure
 		// 16ms constexpr
-	auto t1 = std::chrono::high_resolution_clock::now();
+	/*auto t1 = std::chrono::high_resolution_clock::now();
 
 	for (unsigned long long i = 0; i < 4'000'000'000; ++i) {
 		constexpr Matrix<double, 4> m{ -5.0, 2.0,  6.0, -8.0,
@@ -46,6 +46,6 @@ int main() {
 
 
 	auto t2 = std::chrono::high_resolution_clock::now();
-	std::cout << std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1);
+	std::cout << std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1);*/
 
 }
