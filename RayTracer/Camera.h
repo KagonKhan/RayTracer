@@ -4,9 +4,9 @@
 
 struct Size {
     int width{ 1920 }, height{ 1080 };
-};
+} defaultSize;
 
-template <typename T, Size S>
+template <typename T, Size = defaultSize>
 class Camera {
 private:
     Size size;
@@ -58,21 +58,45 @@ public:
     }
 
 
-    constexpr Color<T> RenderRealTime(in World w) const noexcept {
+    constexpr Color<T> RenderRealTime(World w) const noexcept {
 
-        AimRayAt(ref r, row, col);
+        AimRayAt(r, row, col);
 
         col++;
-        if (col >= width)
-        {
+        if (col >= width) {
             col = 0;
             row++;
         }
 
         return w.Coloring(r);
     }
+
     constexpr Color<T> RenderRealTime(int y, int x, World w) const noexcept {
         AimRayAt(r, y, x);
         return w.Coloring(r);
     }
+
+    Canvas RenderToCanvas(World w)
+    {
+        Canvas retVal(height, width);
+
+        Color c;
+
+        for (int row = 0; row < height; row++)
+            for (int col = 0; col < width; col++)
+            {
+                AimRayAt(ref r, row, col);
+                c = w.Coloring(r);
+
+                retVal.WritePixel(row, col, c);
+
+                // Progress report
+                if ((row * width + col) % 10000 == 0)
+                    Console.WriteLine($"{((row * width + col)/1000)} out of {height * width / 1000}");
+
+            }
+
+        return retVal;
+    }
+
 };
