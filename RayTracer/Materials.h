@@ -33,7 +33,7 @@ struct Pattern {
 
     constexpr Color<T> Get(Point<T> p) const noexcept {};
 
-    constexpr static Color<T> GetOnObject(Point<T> p, HitObject<T> obj) const noexcept {
+    inline constexpr static Color<T> GetOnObject(Point<T> p, HitObject<T> obj) const noexcept {
         Point<T> obj_p = obj.Transformation.Inversed() * p;
         Point<T> pat_p = this.Transformation.Inversed() * obj_p;
 
@@ -62,10 +62,10 @@ public:
 
     Color<T> color;
 
-    constexpr SolidColorPattern(Color c) noexcept {
+    inline constexpr SolidColorPattern(Color c) noexcept {
         color = c;
     }
-    constexpr SolidColorPattern(double r, double g, double b) noexcept {
+    inline constexpr SolidColorPattern(double r, double g, double b) noexcept {
         color = Color(r, g, b);
     }
 
@@ -80,7 +80,7 @@ public:
         this.b = b;
     }
 
-    constexpr Color<T> Get(Point<T> point) const noexcept {
+    inline constexpr Color<T> Get(Point<T> point) const noexcept {
         Point tp = this.Transformation.Inversed() * point;
         return std::floor(tp.X) % 2 == 0 ? a : b;
     }
@@ -93,7 +93,8 @@ public:
         this.a = a;
         this.b = b;
     }
-    constexpr Color<T> Get(Point<T> point) const noexcept {
+
+    inline constexpr Color<T> Get(Point<T> point) const noexcept {
         return a + (b - a) * (point.X - std::floor(point.X));
     }
 };
@@ -107,7 +108,7 @@ public:
         Transformation = Matrix<float, 4>::I.Scaled(2, 1, 1);
     }
 
-    constexpr Color<T> Get(Point<T> point) const noexcept {
+    inline constexpr Color<T> Get(Point<T> point) const noexcept {
         if (std::abs(point.X - std::floor(point.X)) < 0.5)
             return a + (b - a) * (2 * point.X - std::floor(2 * point.X));
         else
@@ -122,7 +123,7 @@ public:
         this.a = a;
         this.b = b;
     }
-    constexpr Color<T> Get(Point<T> point) const noexcept {
+    inline constexpr Color<T> Get(Point<T> point) const noexcept {
         return std::floor(std::sqrt(point.X * point.X + point.Z * point.Z)) % 2 == 0 ? a : b;
     }
 };
@@ -135,7 +136,7 @@ public:
         this.b = b;
     }
 
-    constexpr Color<T> Get(Point<T> point) const noexcept {
+    inline constexpr Color<T> Get(Point<T> point) const noexcept {
         Point blend = this.Transformation.Inversed() * point;
         return (std::floor(blend.X) + std::floor(blend.Y) + std::floor(blend.Z)) % 2 == 0 ? a : b;
     }
@@ -149,7 +150,7 @@ public:
         this.b = b;
     }
 
-    constexpr Color<T> Get(Point<T> point) const noexcept {
+    inline constexpr Color<T> Get(Point<T> point) const noexcept {
         Point<T> blend = this.Transformation.Inversed() * point;
         return (std::floor(blend.X) + std::floor(blend.Z)) % 2 == 0 ? a : b;
     }
@@ -175,13 +176,13 @@ struct NestedPattern : public Pattern<T> {
 public:
     Pattern<T> a, b;
     double t;
-    constexpr NestedPattern(Pattern<T> a, Pattern<T> b, double t = 0.5) noexcept {
+    inline constexpr NestedPattern(Pattern<T> a, Pattern<T> b, double t = 0.5) noexcept {
         this.a = a;
         this.b = b;
         this.t = t;
     }
 
-    constexpr Color<T> Get(Point<T> point) const noexcept {
+    inline constexpr Color<T> Get(Point<T> point) const noexcept {
         Point blend = this.Transformation.Inversed() * point;
         return a.Get(blend) * (1.0 - t) + b.Get(blend) * t;
     }

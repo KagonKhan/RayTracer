@@ -1,9 +1,6 @@
-using System;
-using System.Collections.Generic;
+#pragma once
 
 
-namespace RayTracingCS
-{
 
     abstract public class HitObject
     {
@@ -367,5 +364,3 @@ namespace RayTracingCS
 
         }
     }
-
-}

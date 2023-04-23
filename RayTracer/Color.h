@@ -10,37 +10,34 @@ private:
 public:
     using namespace Constants;
 
-    constexpr Color() noexcept : data{ 0, 0, 0 } { }
-    constexpr Color(T r = 0, T g = 0, T b = 0) noexcept : data{ r, g, b } { }
+    inline constexpr Color() noexcept : data{ 0, 0, 0 } { }
+    inline constexpr Color(T r = 0, T g = 0, T b = 0) noexcept : data{ r, g, b } { }
 
-    constexpr friend std::ostream& operator<<(std::ostream& os, const Color& p) noexcept {
+    inline constexpr friend std::ostream& operator<<(std::ostream& os, const Color& p) noexcept {
         os << "( " << p.data[0] << ", " << p.data[1] << ", " << p.data[2] << " )";
         return os;
     }
 
-    constexpr Color<T> operator +(Color<T> const& rhs) const noexcept {
+    inline constexpr Color<T> operator +(Color<T> const& rhs) const noexcept {
         return { data[0] + rhs.data[0], data[1] + rhs.data[1], data[2] + rhs.data[2] };
     }
-    constexpr Color<T> operator -(Color<T> const& rhs) const noexcept {
+    inline constexpr Color<T> operator -(Color<T> const& rhs) const noexcept {
         return { data[0] - rhs.data[0], data[1] - rhs.data[1], data[2] - rhs.data[2] };
     }
 
-    constexpr Color<T> operator *(double scalar) const noexcept {
+    inline constexpr Color<T> operator *(double scalar) const noexcept {
         return { data[0] * scalar, data[1] * scalar, data[2] * scalar };
     }
-    constexpr Color<T> operator *(Color<T> const& rhs) const noexcept {
+    inline constexpr Color<T> operator *(Color<T> const& rhs) const noexcept {
         return { data[0] * rhs.data[0], data[1] * rhs.data[1], data[2] * rhs.data[2] };
     }
 
-    constexpr Color<T> clamped() const noexcept {
+    inline constexpr Color<T> clamped() const noexcept {
         return { std::clamp(data[0], 0, 255), std::clamp(data[1], 0, 255), std::clamp(data[2], 0, 255) };
     }
 
     constexpr auto operator<=>(Color<T> const&) const noexcept = default;
 };
-
-
-
 
 
 namespace Constants {

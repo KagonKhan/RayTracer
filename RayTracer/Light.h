@@ -15,7 +15,7 @@ struct Light {
 
 template <typename T>
 struct PointLight : public Light<T> {
-    constexpr PointLight(Point<T> p, Color<T> i) : pos(p), intensity(i) noexcept { }
+    inline constexpr PointLight(Point<T> p, Color<T> i) : pos(p), intensity(i) noexcept { }
 
     constexpr Color<T> Lighting(Material<T> m, HitObject<T> obj, Point<T> p, Vector<T> eye, Vector<T> norm, bool shadowed = false) const noexcept override {
         Color<T> eff_color = (m.pattern != null) ? m.pattern.GetOnObject(p, obj) : m.color;

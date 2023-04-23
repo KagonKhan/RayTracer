@@ -1,4 +1,6 @@
 #pragma once
+#include "World.h"
+
 
 struct Size {
     int width{ 1920 }, height{ 1080 };

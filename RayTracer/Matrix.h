@@ -20,10 +20,12 @@ private:
 		return Dimension * row + col;
 	}
 public: 
-	constexpr Matrix() noexcept : data{ } { }
-    template <typename... Ts> constexpr Matrix(Ts&&... ts) noexcept : data{ std::forward<Ts>(ts)... } {}
+    inline constexpr Matrix() noexcept : data{ } { }
+
+    template <typename... Ts> 
+    inline constexpr Matrix(Ts&&... ts) noexcept : data{ std::forward<Ts>(ts)... } {}
 	
-	constexpr friend std::ostream& operator<<(std::ostream& os, const Matrix& m) noexcept {
+    inline constexpr friend std::ostream& operator<<(std::ostream& os, const Matrix& m) noexcept {
 		for (std::size_t row = 0; row < Dimension; ++row) {
 			for (std::size_t col = 0; col < Dimension; ++col) {
 				os << m.data[mapIndex(row, col)] << (((col + 1) != Dimension) ? ", " : "\n");
@@ -32,7 +34,7 @@ public:
 		return os;
 	}
 
-    constexpr auto operator<=>(Matrix<T, Dimension> const&) const noexcept = default;
+    inline constexpr auto operator<=>(Matrix<T, Dimension> const&) const noexcept = default;
 
     constexpr Matrix<T, Dimension> operator *(Matrix<T, Dimension> const& rhs) const noexcept {
         // TODO: add a flag if a matrix is transposed?
@@ -95,7 +97,7 @@ public:
         }
     }
 
-    constexpr Vector<T> operator *(Vector<T> const& rhs) const noexcept {
+    inline constexpr Vector<T> operator *(Vector<T> const& rhs) const noexcept {
         T v1 = data[mapIndex(0, 0)] * rhs.data[0] + data[mapIndex(0, 1)] * rhs.data[1] + data[mapIndex(0, 2)] * rhs.data[2] + data[mapIndex(0, 3)] * rhs.data[3];
         T v2 = data[mapIndex(1, 0)] * rhs.data[0] + data[mapIndex(1, 1)] * rhs.data[1] + data[mapIndex(1, 2)] * rhs.data[2] + data[mapIndex(1, 3)] * rhs.data[3];
         T v3 = data[mapIndex(2, 0)] * rhs.data[0] + data[mapIndex(2, 1)] * rhs.data[1] + data[mapIndex(2, 2)] * rhs.data[2] + data[mapIndex(2, 3)] * rhs.data[3];
@@ -104,7 +106,7 @@ public:
         return { v1, v2, v3, v4 };
     }
 
-    constexpr Point<T> operator *(Point<T> const& rhs) const noexcept {
+    inline constexpr Point<T> operator *(Point<T> const& rhs) const noexcept {
         T v1 = data[mapIndex(0, 0)] * rhs.data[0] + data[mapIndex(0, 1)] * rhs.data[1] + data[mapIndex(0, 2)] * rhs.data[2] + data[mapIndex(0, 3)] * rhs.data[3];
         T v2 = data[mapIndex(1, 0)] * rhs.data[0] + data[mapIndex(1, 1)] * rhs.data[1] + data[mapIndex(1, 2)] * rhs.data[2] + data[mapIndex(1, 3)] * rhs.data[3];
         T v3 = data[mapIndex(2, 0)] * rhs.data[0] + data[mapIndex(2, 1)] * rhs.data[1] + data[mapIndex(2, 2)] * rhs.data[2] + data[mapIndex(2, 3)] * rhs.data[3];
@@ -114,7 +116,7 @@ public:
     }
 
     // TODO: optimize?
-    constexpr Matrix<T, Dimension> Transposed() const noexcept {
+    inline constexpr Matrix<T, Dimension> Transposed() const noexcept {
         Matrix<T, Dimension> retVal;
         for (int row = 0; row < 4; row++)
             for (int col = 0; col < 4; col++)
@@ -123,7 +125,7 @@ public:
         return retVal;
     }
 
-    constexpr Matrix<T, Dimension> Inversed() const noexcept {
+    inline constexpr Matrix<T, Dimension> Inversed() const noexcept {
         if constexpr (Dimension == 4) {
             Matrix<T, Dimension> retVal{ 1.0, 0.0 ,0.0 ,0.0 ,0.0 ,1.0 ,0.0 ,0.0 ,0.0 ,0.0 ,1.0 ,0.0 ,0.0 ,0.0 ,0.0 ,1.0 };
             Matrix<T, Dimension> a = *this;
@@ -159,25 +161,25 @@ public:
     }
 
     // TODO: Enable if dim 4
-    constexpr Matrix<T, Dimension> Translated(double x, double y, double z) const noexcept {
+    inline constexpr Matrix<T, Dimension> Translated(double x, double y, double z) const noexcept {
         return *this * Matrix<T, 4>{1, 0, 0, x,
                                     0, 1, 0, y,
                                     0, 0, 1, z,
                                     0, 0, 0, 1};
     }
-    constexpr Matrix<T, Dimension> Scaled(double x, double y, double z) const noexcept {
+    inline constexpr Matrix<T, Dimension> Scaled(double x, double y, double z) const noexcept {
         return *this * Matrix<T, 4>{x, 0, 0, 0,
                                     0, y, 0, 0,
                                     0, 0, z, 0,
                                     0, 0, 0, 1};
     }
-    constexpr Matrix<T, Dimension> Sheared(double Xy = 0, double Xz = 0, double Yx = 0, double Yz = 0, double Zx = 0, double Zy = 0) const noexcept {
+    inline constexpr Matrix<T, Dimension> Sheared(double Xy = 0, double Xz = 0, double Yx = 0, double Yz = 0, double Zx = 0, double Zy = 0) const noexcept {
         return *this * Matrix<T, 4>{1, Xy, Xz, 0,
                                     Yx, 1, Yz, 0,
                                     Zx, Zy, 1, 0,
                                     0, 0, 0, 1};
     }
-    constexpr Matrix<T, Dimension> RotatedX(double r) const noexcept {
+    inline constexpr Matrix<T, Dimension> RotatedX(double r) const noexcept {
         double c = std::cos(r), s = std::sin(r);
 
         return *this * Matrix<T, 4>{1, 0, 0, 0,
@@ -185,7 +187,7 @@ public:
                                     0, s, c, 0,
                                     0, 0, 0, 1};
     }
-    constexpr Matrix<T, Dimension> RotatedY(double r) const noexcept {
+    inline constexpr Matrix<T, Dimension> RotatedY(double r) const noexcept {
         double c = std::cos(r), s = std::sin(r);
 
         return *this * Matrix<T, 4>{c, 0, s, 0,
@@ -201,9 +203,11 @@ public:
                                     0, 0, 1, 0,
                                     0, 0, 0, 1};
     }
-
-    inline static constexpr Matrix<T, 4> I{ 1, 0, 0, 0,
-                                            0, 1, 0, 0,
-                                            0, 0, 1, 0,
-                                            0, 0, 0, 1 };
 };
+
+
+template<typename T>
+inline static constexpr Matrix<T, 4> I{ 1.0, 0.0, 0.0, 0.0,
+                                        0.0, 1.0, 0.0, 0.0,
+                                        0.0, 0.0, 1.0, 0.0,
+                                        0.0, 0.0, 0.0, 1.0 };
