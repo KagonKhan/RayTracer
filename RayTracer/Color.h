@@ -8,8 +8,6 @@ private:
     std::array<T, 3> data;
 
 public:
-    using namespace Constants;
-
     inline constexpr Color() noexcept : data{ 0, 0, 0 } { }
     inline constexpr Color(T r = 0, T g = 0, T b = 0) noexcept : data{ r, g, b } { }
 

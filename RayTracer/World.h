@@ -3,6 +3,7 @@
 #include "Vector.h"
 #include "Matrix.h"
 #include <optional>
+#include "Objects.h"
 
 template <typename T>
 struct Ray

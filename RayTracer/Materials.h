@@ -3,6 +3,21 @@
 #include "Matrix.h"
 #include "Objects.h"
 
+template <typename T>
+struct Pattern {
+    Color<T> a, b;
+    Matrix<T, 4> Transformation{ I<T> };
+
+    constexpr Color<T> Get(Point<T> p) const noexcept {};
+
+    static Color<T> GetOnObject(Point<T> p, HitObject<T> obj) {
+        Point<T> obj_p = obj.Transformation.Inversed() * p;
+        Point<T> pat_p = this.Transformation.Inversed() * obj_p;
+
+        return Get(pat_p);
+    }
+};
+
 
 template <typename T>
 struct Material {
@@ -14,7 +29,7 @@ struct Material {
 
     constexpr Material() noexcept = default;
 
-    constexpr Material(T amb, T dif, T spe, T shi, Color<T> col, T reflect = 0.0, T trans = 0.0, T refr = 1.0) noexcept 
+    constexpr Material(T amb, T dif, T spe, T shi, Color<T> col, T reflect = 0.0, T trans = 0.0, T refr = 1.0) noexcept
         : ambient(amb), diffuse(dif), specular(spe), shininess(shi), color(col), pattern(std::nullopt), reflective(reflect), transparency(trans), refraction(refr) {
     }
 
@@ -23,21 +38,6 @@ struct Material {
         material.transparency = 1.0;
         material.refraction = 1.5;
         return material;
-    }
-};
-
-template <typename T>
-struct Pattern {
-    Color<T> a, b;
-    Matrix<T, 4> Transformation{ Matrix<float, 4>::I };
-
-    constexpr Color<T> Get(Point<T> p) const noexcept {};
-
-    inline constexpr static Color<T> GetOnObject(Point<T> p, HitObject<T> obj) const noexcept {
-        Point<T> obj_p = obj.Transformation.Inversed() * p;
-        Point<T> pat_p = this.Transformation.Inversed() * obj_p;
-
-        return Get(pat_p);
     }
 };
 
