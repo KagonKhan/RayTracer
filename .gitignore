@@ -9,6 +9,8 @@
 *.user
 *.userosscache
 *.sln.docstates
+RayTracer/canvas.ppm
+
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
