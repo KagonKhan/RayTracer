@@ -1,25 +1,30 @@
 #include "Vector.h"
-
-bool cmp(auto x, auto y) {
-	return (
-		x[0] == y[0] &&
-		x[1] == y[1] &&
-		x[2] == y[2] &&
-		x[3] == y[3]
-		);
+#include "Canvas.hpp"
+#include <chrono>
+template<typename Canvas>
+constexpr void render(Canvas& c) {
+    for (int row = 0; row < Canvas::height; row++) {
+        for (int col = 0; col < Canvas::width; col++) {
+            c.canvas[row][col] = Color<double>(row, col, row+col).clamped();
+        }
+    }
 }
+using namespace std::literals::chrono_literals;
 
 int main() {
-	Color c1(1.0, 0.2, 0.4);
-	Color c2(0.9, 1.0, 0.1);
-	auto res = c1 * c2;
-	Color expected(0.9, 0.2, 0.04);
+    Canvas<7680, 4320, double> c;
+    
+    auto t1 = std::chrono::high_resolution_clock::now();
+    render(c);
+    auto t2 = std::chrono::high_resolution_clock::now();
 
-	auto subbed = Color(res - expected);
-	
+    std::cout << std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1) << std::endl;
 
-	std::cout <<"c1 * c2 = " << res;
-	std::cout <<"\nexpected= " << expected;
-	std::cout << "\ndiff: " << (res == Color(0.9, 0.2, 0.04));
-	std::cout << "\nstd::epsilon: " << std::numeric_limits<double>::epsilon();
+    auto t3 = std::chrono::high_resolution_clock::now();
+    c.toPPM();
+    auto t4 = std::chrono::high_resolution_clock::now();
+
+
+
+    std::cout << std::chrono::duration_cast<std::chrono::seconds>(t4 - t3) << std::endl;
 }

@@ -5,42 +5,61 @@
 #include <sstream>
 
 #include "Vector.h"
+#include <fstream>
+#include <iostream>
 
-template <std::size_t width, std::size_t height, typename T>
+template <std::size_t Width, std::size_t Height, typename T>
 class Canvas
 {
 public:
-    std::array<std::array< Color<T>, width>, height> canvas;
+    static constexpr std::size_t width = Width;
+    static constexpr std::size_t height = Height;
 
-    void Flush(const Color<T>& color) {
-        for (int row = 0; row < height; row++)
-            for (int col = 0; col < width; col++)
+
+    std::array<std::array< Color<T>, Width>, Height> canvas;
+
+    constexpr void print() const noexcept {
+        for (auto row : canvas) {
+            for (auto value : row) {
+                std::cout << value << " ";
+            }
+            std::cout << std::endl;
+        }
+    }
+
+    constexpr void flush(Color<T> const& color) noexcept {
+        for (int row = 0; row < Height; row++)
+            for (int col = 0; col < Width; col++)
                 canvas[row, col] = color;
     }
 
-    void WritePixel(int row, int col, const Color<T>& c) {
-        if (col >= width || col < 0 || row >= height || row < 0)
+    constexpr void writePixel(int row, int col, const Color<T>& c) noexcept{
+        if (col >= Width || col < 0 || row >= Height || row < 0)
             return;
-
 
         canvas[row][col] = ClampR(c);
     }
 
     // Artifacts: no space after color values in file
 
-    void ToPPM() {
+    constexpr void toPPM() const  {
         std::ostringstream ss;
 
-        ss << "P3\n{width} {height}\n255\n";
+        ss <<
+            "P3\n" <<
+            Width << " " << Height << "\n" <<
+            "255\n";
 
-        for (int row = 0; row < height; row++) {
-            for (int col = 0; col < width; col++) {
+        for (int row = 0; row < Height; row++) {
+            for (int col = 0; col < Width; col++) {
                 ss << canvas[row][col] << " ";
             }
             ss << '\n';
         }
+
         std::ofstream outFile("canvas.ppm");
 
-        outFile << ss.rdbuf();
+        outFile << ss.str();
+        outFile.close();
     }
 };

@@ -121,7 +121,7 @@ public:
     constexpr Color(T r, T g, T b) noexcept : Tuple<T>(r, g, b, 0) { }
 
     inline constexpr friend std::ostream& operator<<(std::ostream& os, const Color& p) noexcept {
-        os << "( " << p.data[0] << ", " << p.data[1] << ", " << p.data[2] << " )";
+        os << (int)p.data[0] << " " << (int)p.data[1] << " " << (int)p.data[2];
         return os;
     }
 
@@ -138,7 +138,7 @@ public:
     constexpr T blue()  const noexcept { return data[2]; }
 
     inline constexpr Color clamped() const noexcept {
-        return { std::clamp(data[0], 0, 255), std::clamp(data[1], 0, 255), std::clamp(data[2], 0, 255) };
+        return { std::clamp<T>(data[0], 0, 255), std::clamp<T>(data[1], 0, 255), std::clamp<T>(data[2], 0, 255) };
     }
 };
 
