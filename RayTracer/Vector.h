@@ -55,6 +55,8 @@ struct Tuple {
 template <typename T>
 struct Vector : public Tuple<T> {
 	constexpr Vector(T x, T y, T z, T w = 0) noexcept : Tuple<T>( x, y, z, w ) { }
+	constexpr Vector(Tuple<T> t) noexcept : Tuple<T>( t ) { }
+
     using Tuple<T>::data;
 
     constexpr T magnitude() const noexcept {
