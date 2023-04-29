@@ -108,6 +108,7 @@
       <LanguageStandard_C>stdc17</LanguageStandard_C>
       <AdditionalOptions>/constexpr:steps 999999999 %(AdditionalOptions)</AdditionalOptions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <AdditionalIncludeDirectories>S:\Users\sszyn\source\repos\RayTracer\RayTracer\fast_io\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -116,8 +117,7 @@
       <StackCommitSize>
       </StackCommitSize>
       <LargeAddressAware>true</LargeAddressAware>
-      <BaseAddress>
-      </BaseAddress>
+      <BaseAddress>0xC000000</BaseAddress>
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
     </Link>
   </ItemDefinitionGroup>
@@ -133,6 +133,7 @@
       <LanguageStandard_C>stdc17</LanguageStandard_C>
       <AdditionalOptions>/constexpr:steps 999999999 %(AdditionalOptions)</AdditionalOptions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <AdditionalIncludeDirectories>S:\Users\sszyn\source\repos\RayTracer\RayTracer\fast_io\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -143,8 +144,7 @@
       <StackCommitSize>
       </StackCommitSize>
       <LargeAddressAware>true</LargeAddressAware>
-      <BaseAddress>
-      </BaseAddress>
+      <BaseAddress>0xC000000</BaseAddress>
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
     </Link>
   </ItemDefinitionGroup>
@@ -153,6 +153,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Canvas.hpp" />
+    <ClInclude Include="Matrix.h" />
     <ClInclude Include="Vector.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

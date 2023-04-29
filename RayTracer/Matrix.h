@@ -11,24 +11,27 @@
 
 template <typename T, std::size_t Dimension>
 class Matrix {
-private:
-	inline static constexpr std::size_t dim{ Dimension * Dimension };
-	std::array<T, dim> data;
+public:
+	inline static constexpr std::size_t size{ Dimension * Dimension };
+    inline static constexpr std::size_t dimension{ Dimension };
+
+	std::array<T, size> data;
 
     // TODO: Convert to multi-dim sub operator when available
 	inline static constexpr std::size_t mapIndex(const std::size_t row, const std::size_t col) {
-		return Dimension * row + col;
+		return dimension * row + col;
 	}
-public: 
+
+
     inline constexpr Matrix() noexcept : data{ } { }
 
     template <typename... Ts> 
     inline constexpr Matrix(Ts&&... ts) noexcept : data{ std::forward<Ts>(ts)... } {}
 	
     inline constexpr friend std::ostream& operator<<(std::ostream& os, const Matrix& m) noexcept {
-		for (std::size_t row = 0; row < Dimension; ++row) {
-			for (std::size_t col = 0; col < Dimension; ++col) {
-				os << m.data[mapIndex(row, col)] << (((col + 1) != Dimension) ? ", " : "\n");
+		for (std::size_t row = 0; row < dimension; ++row) {
+			for (std::size_t col = 0; col < dimension; ++col) {
+				os << m.data[mapIndex(row, col)] << (((col + 1) != dimension) ? ", " : "\n");
 			}
 		}
 		return os;
@@ -40,7 +43,7 @@ public:
         // TODO: add a flag if a matrix is transposed?
         // Mayrhs.datae transposing will rhs.datae faster,
         // or mayrhs.datae just dispatch to different algorithms
-        if constexpr (Dimension == 4) {
+        if constexpr (dimension == 4) {
             T v1  = data[mapIndex(0, 0)] * rhs.data[mapIndex(0, 0)] + data[mapIndex(0, 1)] * rhs.data[mapIndex(1, 0)] + data[mapIndex(0, 2)] * rhs.data[mapIndex(2, 0)] + data[mapIndex(0, 3)] * rhs.data[mapIndex(3, 0)];
             T v2 = data[mapIndex(0, 0)] * rhs.data[mapIndex(0, 1)] + data[mapIndex(0, 1)] * rhs.data[mapIndex(1, 1)] + data[mapIndex(0, 2)] * rhs.data[mapIndex(2, 1)] + data[mapIndex(0, 3)] * rhs.data[mapIndex(3, 1)];
             T v3 = data[mapIndex(0, 0)] * rhs.data[mapIndex(0, 2)] + data[mapIndex(0, 1)] * rhs.data[mapIndex(1, 2)] + data[mapIndex(0, 2)] * rhs.data[mapIndex(2, 2)] + data[mapIndex(0, 3)] * rhs.data[mapIndex(3, 2)];
@@ -67,7 +70,7 @@ public:
                 v13, v14, v15, v16 };
         }
 
-        if constexpr (Dimension == 3) {
+        if constexpr (dimension == 3) {
             T v1 = data[mapIndex(0, 0)] * rhs.data[mapIndex(0, 0)] + data[mapIndex(0, 1)] * rhs.data[mapIndex(1, 0)] + data[mapIndex(0, 2)] * rhs.data[mapIndex(2, 0)];
             T v2 = data[mapIndex(0, 0)] * rhs.data[mapIndex(0, 1)] + data[mapIndex(0, 1)] * rhs.data[mapIndex(1, 1)] + data[mapIndex(0, 2)] * rhs.data[mapIndex(2, 1)];
             T v3 = data[mapIndex(0, 0)] * rhs.data[mapIndex(0, 2)] + data[mapIndex(0, 1)] * rhs.data[mapIndex(1, 2)] + data[mapIndex(0, 2)] * rhs.data[mapIndex(2, 2)];
@@ -85,7 +88,7 @@ public:
                      v7, v8, v9 };
         }
 
-        if constexpr (Dimension == 2) {
+        if constexpr (dimension == 2) {
             T v1 = data[mapIndex(0, 0)] * rhs.data[mapIndex(0, 0)] + data[mapIndex(0, 1)] * rhs.data[mapIndex(1, 0)];
             T v2 = data[mapIndex(0, 0)] * rhs.data[mapIndex(0, 1)] + data[mapIndex(0, 1)] * rhs.data[mapIndex(1, 1)];
             
@@ -97,7 +100,7 @@ public:
         }
     }
 
-    inline constexpr Vector<T> operator *(Vector<T> const& rhs) const noexcept {
+    inline constexpr Tuple<T> operator *(Tuple<T> const& rhs) const noexcept {
         T v1 = data[mapIndex(0, 0)] * rhs.data[0] + data[mapIndex(0, 1)] * rhs.data[1] + data[mapIndex(0, 2)] * rhs.data[2] + data[mapIndex(0, 3)] * rhs.data[3];
         T v2 = data[mapIndex(1, 0)] * rhs.data[0] + data[mapIndex(1, 1)] * rhs.data[1] + data[mapIndex(1, 2)] * rhs.data[2] + data[mapIndex(1, 3)] * rhs.data[3];
         T v3 = data[mapIndex(2, 0)] * rhs.data[0] + data[mapIndex(2, 1)] * rhs.data[1] + data[mapIndex(2, 2)] * rhs.data[2] + data[mapIndex(2, 3)] * rhs.data[3];
@@ -105,14 +108,12 @@ public:
 
         return { v1, v2, v3, v4 };
     }
+    inline constexpr Vector<T> operator *(Vector<T> const& rhs) const noexcept {
+        return Vector<T>{*this* Tuple<T>{rhs}};
+    }
 
     inline constexpr Point<T> operator *(Point<T> const& rhs) const noexcept {
-        T v1 = data[mapIndex(0, 0)] * rhs.data[0] + data[mapIndex(0, 1)] * rhs.data[1] + data[mapIndex(0, 2)] * rhs.data[2] + data[mapIndex(0, 3)] * rhs.data[3];
-        T v2 = data[mapIndex(1, 0)] * rhs.data[0] + data[mapIndex(1, 1)] * rhs.data[1] + data[mapIndex(1, 2)] * rhs.data[2] + data[mapIndex(1, 3)] * rhs.data[3];
-        T v3 = data[mapIndex(2, 0)] * rhs.data[0] + data[mapIndex(2, 1)] * rhs.data[1] + data[mapIndex(2, 2)] * rhs.data[2] + data[mapIndex(2, 3)] * rhs.data[3];
-        T v4 = data[mapIndex(3, 0)] * rhs.data[0] + data[mapIndex(3, 1)] * rhs.data[1] + data[mapIndex(3, 2)] * rhs.data[2] + data[mapIndex(3, 3)] * rhs.data[3];
-
-        return { v1, v2, v3, v4 };
+        return Point<T>{*this* Tuple<T>{rhs}};
     }
 
     // TODO: optimize?
@@ -126,7 +127,7 @@ public:
     }
 
     inline constexpr Matrix<T, Dimension> Inversed() const noexcept {
-        if constexpr (Dimension == 4) {
+        if constexpr (dimension == 4) {
             Matrix<T, Dimension> retVal{ 1.0, 0.0 ,0.0 ,0.0 ,0.0 ,1.0 ,0.0 ,0.0 ,0.0 ,0.0 ,1.0 ,0.0 ,0.0 ,0.0 ,0.0 ,1.0 };
             Matrix<T, Dimension> a = *this;
             

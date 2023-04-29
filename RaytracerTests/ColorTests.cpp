@@ -3,7 +3,7 @@
 #include "../RayTracer/Vector.h"
 #include <ranges>
 
-TEST(TupleTest, ColorCreationTest) {
+TEST(ColorTests, ColorCreationTest) {
 	Color c(-0.5, 0.4, 1.7);
 
 	ASSERT_EQ(-0.5, c.red());
@@ -11,21 +11,21 @@ TEST(TupleTest, ColorCreationTest) {
 	ASSERT_EQ(1.7, c.blue());
 }
 
-TEST(TupleTest, ColorSubtractionTest) {
+TEST(ColorTests, ColorSubtractionTest) {
 	Color c1(0.9, 0.6, 0.75);
 	Color c2(0.7, 0.1, 0.25);
 
 	ASSERT_EQ(Color(0.2, 0.5, 0.5), Color(c1 - c2));
 }
 
-TEST(TupleTest, ColorMultiplicationTest) {
+TEST(ColorTests, ColorMultiplicationTest) {
 	Color c1(1.0, 0.2, 0.4);
 	Color c2(0.9, 1.0, 0.1);
 
 	ASSERT_EQ(Color(0.9, 0.2, 0.04), Color(c1 * c2));
 }
 
-TEST(TupleTest, ColorMultiplicationScalarTest) {
+TEST(ColorTests, ColorMultiplicationScalarTest) {
 	Color c(0.2, 0.3, 0.4);
 	ASSERT_EQ(Color(0.4, 0.6, 0.8), c * 2.0);
 }

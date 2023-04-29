@@ -1,9 +1,9 @@
 #include "pch.h"
 
 #include "../RayTracer/Vector.h"
-#include <ranges>
 
-TEST(TupleTest, PointCreationTest) {
+
+TEST(PointTests, PointCreationTest) {
 	Point p(4, -4, 3);
 	std::array expected{ 4, -4, 3, 1 };
 
@@ -12,7 +12,7 @@ TEST(TupleTest, PointCreationTest) {
 	}
 }
 
-TEST(TupleTest, VectorCreationTest) {
+TEST(VectorTests, VectorCreationTest) {
 	Vector v(4, -4, 3);
 	std::array expected{ 4, -4, 3, 0 };
 
@@ -32,7 +32,7 @@ TEST(TupleTest, TupleAdditionTest) {
 }
 
 
-TEST(TupleTest, PointSubtractionTest) {
+TEST(PointTests, PointSubtractionTest) {
 	Point p1(3, 2, 1);
 	Point p2(5, 6, 7);
 	Vector expected(-2, -4, -6);
@@ -42,7 +42,7 @@ TEST(TupleTest, PointSubtractionTest) {
 }
 
 
-TEST(TupleTest, PointVectorSubtractionTest) {
+TEST(PointTests, PointVectorSubtractionTest) {
 	Point p(3, 2, 1);
 	Vector v(5, 6, 7);
 	Point expected(-2, -4, -6);
@@ -52,7 +52,7 @@ TEST(TupleTest, PointVectorSubtractionTest) {
 }
 
 
-TEST(TupleTest, VectorSubtractionTest) {
+TEST(VectorTests, VectorSubtractionTest) {
 	Vector v1(3, 2, 1);
 	Vector v2(5, 6, 7);
 	Vector expected(-2, -4, -6);
@@ -61,7 +61,7 @@ TEST(TupleTest, VectorSubtractionTest) {
 	ASSERT_EQ(expected, v1 - v2);
 }
 
-TEST(TupleTest, VectorSubtraction2Test) {
+TEST(VectorTests, VectorSubtraction2Test) {
 	Vector v1 { 0, 0, 0 };
 	Vector v2 { 1, -2, 3 };
 	Vector expected { -1, 2, -3 };
@@ -70,7 +70,7 @@ TEST(TupleTest, VectorSubtraction2Test) {
 	ASSERT_EQ(expected, v1 - v2);
 }
 
-TEST(TupleTest, VectorSubtraction3Test) {
+TEST(VectorTests, VectorSubtraction3Test) {
 	Vector v { 1, -2, 3 };
 	Vector expected { -1, 2, -3 };
 
@@ -103,7 +103,7 @@ TEST(TupleTest, TupleScalarDivisionTest) {
 	ASSERT_EQ(expected, t / 2.0);
 }
 
-TEST(TupleTest, VectorMagnitudeTest) {
+TEST(VectorTests, VectorMagnitudeTest) {
 	int expected{ 1 };
 
 
@@ -112,19 +112,19 @@ TEST(TupleTest, VectorMagnitudeTest) {
 	ASSERT_EQ(expected, Vector(0, 0, 1).magnitude());
 }
 
-TEST(TupleTest, VectorMagnitude2Test) {
+TEST(VectorTests, VectorMagnitude2Test) {
 	ASSERT_EQ(std::sqrt(14.0), Vector(1.0, 2.0, 3.0).magnitude());
 	ASSERT_EQ(std::sqrt(14.0), Vector(-1.0, -2.0, -3.0).magnitude());
 }
 
 
-TEST(TupleTest, VectorNormalizationTest) {
+TEST(VectorTests, VectorNormalizationTest) {
 	ASSERT_EQ(Vector(1, 0, 0), Vector(4, 0, 0).normalized());
 	ASSERT_EQ(Vector(0, 1, 0), Vector(0, 4, 0).normalized());
 	ASSERT_EQ(Vector(0, 0, 1), Vector(0, 0, 4).normalized());
 }
 
-TEST(TupleTest, VectorNormalization2Test) {
+TEST(VectorTests, VectorNormalization2Test) {
 	auto res = Vector(1.0, 2.0, 3.0).normalized();
 
 	Vector expected(0.26726, 0.53452, 0.80178);
@@ -134,7 +134,7 @@ TEST(TupleTest, VectorNormalization2Test) {
 }
 
 
-TEST(TupleTest, VectorDotTest) {
+TEST(VectorTests, VectorDotTest) {
 	Vector v1(1, 2, 3);
 	Vector v2(2, 3, 4);
 	
@@ -142,11 +142,12 @@ TEST(TupleTest, VectorDotTest) {
 }
 
 
-TEST(TupleTest, VectorCrossTest) {
+TEST(VectorTests, VectorCrossTest) {
 	Vector v1(1, 2, 3);
 	Vector v2(2, 3, 4);
 	
 	ASSERT_EQ(Vector(-1, 2, -1), v1.cross(v2));
 	ASSERT_EQ(Vector(1, -2, 1), v2.cross(v1));
 }
+
 

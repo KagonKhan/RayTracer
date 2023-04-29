@@ -8,12 +8,17 @@
 #include <fstream>
 #include <iostream>
 
+#include "fast_io/include/fast_io.h"
+#include "fast_io_device.h"
+
+
 template <std::size_t Width, std::size_t Height, typename T>
 class Canvas
 {
 public:
     static constexpr std::size_t width = Width;
     static constexpr std::size_t height = Height;
+    using type = T;
 
 
     std::array<std::array< Color<T>, Width>, Height> canvas;
@@ -57,9 +62,25 @@ public:
             ss << '\n';
         }
 
-        std::ofstream outFile("canvas.ppm");
-
+        std::ofstream outFile("canvas3.ppm");
         outFile << ss.str();
         outFile.close();
+    }
+
+    constexpr void toPPMFast() const  {
+        fast_io::obuf_file outFile("canvas2.ppm");
+        fast_io::io::println(outFile, "P3");
+        fast_io::io::println(outFile, Width, " ", Height);
+        fast_io::io::println(outFile, 255);
+
+        for (int row = 0; row < Height; row++) {
+            for (int col = 0; col < Width; col++) {
+                fast_io::io::print(outFile,
+                    canvas[row][col].red(), " ",
+                    canvas[row][col].green(), " ",
+                    canvas[row][col].blue(), " ");
+            }
+            fast_io::io::println (outFile);
+        }
     }
 };
