@@ -153,8 +153,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Canvas.hpp" />
+    <ClInclude Include="Auxiliary.h" />
     <ClInclude Include="Matrix.h" />
+    <ClInclude Include="Objects.h" />
     <ClInclude Include="Vector.h" />
+    <ClInclude Include="World.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

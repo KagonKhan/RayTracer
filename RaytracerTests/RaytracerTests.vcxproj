@@ -37,6 +37,7 @@
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AuxiliaryTests.cpp" />
     <ClCompile Include="ColorTests.cpp" />
     <ClCompile Include="MatrixTests.cpp" />
     <ClCompile Include="TupleTests.cpp" />
