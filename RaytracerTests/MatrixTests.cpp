@@ -223,12 +223,87 @@ TEST(MatrixTests, MatrixScale3Test) {
 }
 
 #include <numbers>
-TEST(MatrixTests, MatrixRotationTest) {
+TEST(MatrixTests, MatrixRotationXTest) {
 	using namespace std::numbers;
+
+	Point<double> p{ 0.0, 1.0, 0.0 };
 	auto half_quarter = I<double>.RotatedX(pi/4.0);
 	auto full_quarter = I<double>.RotatedX(pi/2.0);
-	Point<double> p{ 0.0, 1.0, 0.0 };
 
 	ASSERT_EQ(Point<double>(0.0, sqrt2/2.0, sqrt2 / 2.0), half_quarter * p );
 	ASSERT_EQ(Point<double>(0.0, 0.0, 1.0), full_quarter * p );
+}
+
+TEST(MatrixTests, MatrixRotationYTest) {
+	using namespace std::numbers;
+
+	Point<double> p{ 0.0, 0.0, 1.0 };
+	auto half_quarter = I<double>.RotatedY(pi/4.0);
+	auto full_quarter = I<double>.RotatedY(pi/2.0);
+
+	ASSERT_EQ(Point<double>(sqrt2 / 2.0, 0.0, sqrt2 / 2.0), half_quarter * p);
+	ASSERT_EQ(Point<double>(1.0, 0.0, 0.0), full_quarter * p);
+}
+
+TEST(MatrixTests, MatrixRotationZTest) {
+	using namespace std::numbers;
+
+	Point<double> p{ 0.0, 1.0, 0.0 };
+	auto half_quarter = I<double>.RotatedZ(pi/4.0);
+	auto full_quarter = I<double>.RotatedZ(pi/2.0);
+
+	ASSERT_EQ(Point<double>(-sqrt2/2.0, sqrt2 / 2.0, 0.0), half_quarter * p );
+	ASSERT_EQ(Point<double>(-1.0, 0.0, 0.0), full_quarter * p );
+}
+
+
+TEST(MatrixTests, MatrixInverseRotationTest) {
+	using namespace std::numbers;
+
+	Point<double> p{ 0.0, 1.0, 0.0 };
+	auto Ihalf_quarter = I<double>.RotatedX(pi/4.0).Inversed();
+
+	ASSERT_EQ(Point<double>(0.0, sqrt2/2.0, -sqrt2 / 2.0), Ihalf_quarter * p );
+}
+
+
+TEST(MatrixTests, MatrixShearTest) {
+	Point<double> p{ 2, 3, 4 };
+	auto transform_xy = I<double>.Sheared(1);
+	auto transform_xz = I<double>.Sheared(0, 1);
+	auto transform_yx = I<double>.Sheared(0, 0, 1);
+	auto transform_yz = I<double>.Sheared(0, 0, 0, 1);
+	auto transform_zx = I<double>.Sheared(0, 0, 0, 0, 1);
+	auto transform_zy = I<double>.Sheared(0, 0, 0, 0, 0, 1);
+
+	ASSERT_EQ(Point<double>(5, 3, 4), transform_xy * p );
+	ASSERT_EQ(Point<double>(6, 3, 4), transform_xz * p );
+	ASSERT_EQ(Point<double>(2, 5, 4), transform_yx * p );
+	ASSERT_EQ(Point<double>(2, 7, 4), transform_yz * p );
+	ASSERT_EQ(Point<double>(2, 3, 6), transform_zx * p );
+	ASSERT_EQ(Point<double>(2, 3, 7), transform_zy * p );
+}
+
+
+TEST(MatrixTests, MatrixChainOperationsTest) {
+	Point<double> p{ 1.0, 0.0, 1.0 };
+	auto A = I<double>.RotatedX(std::numbers::pi / 2.0);
+	auto B = I<double>.Scaled(5, 5, 5);
+	auto C = I<double>.Translated(10, 5, 7);
+
+	auto p2 = A * p;
+	ASSERT_EQ(Point<double>(1.0, -1.0, 0.0), p2);
+
+	auto p3 = B * p2;
+	ASSERT_EQ(Point<double>(5.0, -5.0, 0.0), p3);
+
+	auto p4 = C * p3;
+	ASSERT_EQ(Point<double>(15.0, 0.0, 7.0), p4);
+
+	ASSERT_EQ(Point<double>(15.0, 0.0, 7.0), C * B * A * p);
+
+	ASSERT_EQ(Point<double>(15.0, 0.0, 7.0), I<double>
+												.RotatedX(std::numbers::pi / 2.0)
+												.Scaled(5, 5, 5)
+												.Translated(10, 5, 7) * p);
 }

@@ -192,6 +192,17 @@ inline constexpr bool operator==(Point<T> const& lhs, Point<T> const& rhs) {
     return ( std::abs(lhs[0] - rhs[0]) <= eps &&
              std::abs(lhs[1] - rhs[1]) <= eps &&
              std::abs(lhs[2] - rhs[2]) <= eps &&
-             std::abs(lhs[3] - rhs[3]) <= eps);
+             std::abs(lhs[3] - rhs[3]) <= eps );
+}
+
+
+inline constexpr bool operator==(Point<double> const& lhs, Point<double> const& rhs) {
+    if (&lhs == &rhs) return true;
+    
+    constexpr auto eps = 1e1 * std::numeric_limits<double>::epsilon();
+    return ( std::abs(lhs[0] - rhs[0]) <= eps &&
+             std::abs(lhs[1] - rhs[1]) <= eps &&
+             std::abs(lhs[2] - rhs[2]) <= eps &&
+             std::abs(lhs[3] - rhs[3]) <= eps );
 }
 

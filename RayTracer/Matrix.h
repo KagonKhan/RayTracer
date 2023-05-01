@@ -163,46 +163,46 @@ public:
 
     // TODO: Enable if dim 4
     inline constexpr Matrix<T, 4> Translated(double x, double y, double z) const noexcept {
-        return *this * Matrix<T, 4>{1.0, 0.0, 0.0, x,
-                                    0.0, 1.0, 0.0, y,
-                                    0.0, 0.0, 1.0, z,
-                                    0.0, 0.0, 0.0, 1.0};
+        return Matrix<T, 4>{1.0, 0.0, 0.0, x,
+                            0.0, 1.0, 0.0, y,
+                            0.0, 0.0, 1.0, z,
+                            0.0, 0.0, 0.0, 1.0} * *this;
     }
     inline constexpr Matrix<T, 4> Scaled(double x, double y, double z) const noexcept {
-        return *this * Matrix<T, 4>{x, 0.0, 0.0, 0.0,
-                                    0.0, y, 0.0, 0.0,
-                                    0.0, 0.0, z, 0.0,
-                                    0.0, 0.0, 0.0, 1.0};
+        return Matrix<T, 4>{x, 0.0, 0.0, 0.0,
+                            0.0, y, 0.0, 0.0,
+                            0.0, 0.0, z, 0.0,
+                            0.0, 0.0, 0.0, 1.0} * *this;
     }
     inline constexpr Matrix<T, 4> Sheared(double Xy = 0, double Xz = 0, double Yx = 0, double Yz = 0, double Zx = 0, double Zy = 0) const noexcept {
-        return *this * Matrix<T, 4>{1.0, Xy, Xz, 0.0,
-                                    Yx, 1.0, Yz, 0.0,
-                                    Zx, Zy, 1.0, 0.0,
-                                    0.0, 0.0, 0.0, 1.0};
+        return Matrix<T, 4>{1.0,  Xy,  Xz, 0.0,
+                            Yx, 1.0,  Yz, 0.0,
+                            Zx,  Zy, 1.0, 0.0,
+                            0.0, 0.0, 0.0, 1.0} * *this;
     }
     inline constexpr Matrix<T, 4> RotatedX(double r) const noexcept {
         double c = std::cos(r), s = std::sin(r);
 
-        return *this * Matrix<T, 4>{1.0, 0.0, 0.0, 0.0,
-                                    0.0, c, -s, 0.0,
-                                    0.0, s, c, 0.0,
-                                    0.0, 0.0, 0.0, 1.0};
+        return Matrix<T, 4>{1.0, 0.0, 0.0, 0.0,
+                            0.0, c, -s, 0.0,
+                            0.0, s, c, 0.0,
+                            0.0, 0.0, 0.0, 1.0} * *this;
     }
     inline constexpr Matrix<T, 4> RotatedY(double r) const noexcept {
         double c = std::cos(r), s = std::sin(r);
 
-        return *this * Matrix<T, 4>{c, 0, s, 0,
-                                    0, 1, 0, 0,
-                                    -s, 0, c, 0,
-                                    0, 0, 0, 1};
+        return Matrix<T, 4>{c, 0.0, s, 0.0,
+                            0.0, 1.0, 0.0, 0.0,
+                            -s, 0.0, c, 0.0,
+                            0.0, 0.0, 0.0, 1.0} * *this;
     }
-    constexpr Matrix<T, 4> RotatedZ(double r) const noexcept {
+    inline constexpr Matrix<T, 4> RotatedZ(double r) const noexcept {
         double c = std::cos(r), s = std::sin(r);
 
-        return *this * Matrix<T, 4>{c, -s, 0, 0,
-                                    s, c, 0, 0,
-                                    0, 0, 1, 0,
-                                    0, 0, 0, 1};
+        return Matrix<T, 4>{c, -s, 0.0, 0.0,
+                            s, c, 0.0, 0.0,
+                            0.0, 0.0, 1.0, 0.0,
+                            0.0, 0.0, 0.0, 1.0} * *this;
     }
 };
 
