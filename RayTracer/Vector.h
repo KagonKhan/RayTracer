@@ -182,3 +182,16 @@ inline constexpr bool operator==(Color<T> const& lhs, Color<T> const& rhs) {
              std::abs(lhs[2] - rhs[2]) <= eps &&
              std::abs(lhs[3] - rhs[3]) <= eps);
 }
+
+
+template <typename T>
+inline constexpr bool operator==(Point<T> const& lhs, Point<T> const& rhs) {
+    if (&lhs == &rhs) return true;
+    
+    constexpr auto eps = std::numeric_limits<T>::epsilon();
+    return ( std::abs(lhs[0] - rhs[0]) <= eps &&
+             std::abs(lhs[1] - rhs[1]) <= eps &&
+             std::abs(lhs[2] - rhs[2]) <= eps &&
+             std::abs(lhs[3] - rhs[3]) <= eps);
+}
+

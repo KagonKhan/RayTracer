@@ -146,3 +146,89 @@ TEST(MatrixTests, Matrix4InversionTest) {
 	ASSERT_EQ(expected, m.Inversed());
 }
 
+
+TEST(MatrixTests, Matrix4Inversion2Test) {
+	Matrix<double, 4> m( 9.0,  3.0,  0.0,  9.0,
+						-5.0, -2.0, -6.0, -3.0,
+						-4.0,  9.0,  6.0,  4.0,
+						-7.0,  6.0,  6.0,  2.0);
+		
+	Matrix<double, 4> expected(-0.04074, -0.07778,  0.14444, -0.22222,
+							   -0.07778,  0.03333,  0.36667, -0.33333,
+							   -0.02901, -0.14630, -0.10926,  0.12963,
+								0.17778,  0.06667, -0.26667,  0.33333);
+
+	ASSERT_EQ(expected, m.Inversed());
+}
+
+/* TODO: test
+Scenario: Multiplying a product by its inverse
+Given the following 4x4 matrix A:
+| 3 | -9 | 7 | 3 |
+| 3 | -8 | 2 | -9 |
+| -4 | 4 | 4 | 1 |
+| -6 | 5 | -1 | 1 |
+And the following 4x4 matrix B:
+| 8 | 2 | 2 | 2 |
+| 3 | -1 | 7 | 0 |
+| 7 | 0 | 5 | 4 |
+| 6 | -2 | 0 | 5 |
+And C ? A * B
+Then C * inverse(B) = A*/
+
+
+
+
+TEST(MatrixTests, MatrixTranslationTest) {
+	auto transform = I<double>.Translated(5.0, -3.0, 2.0);
+	Point<int> p{ -3, 4, 5 };
+
+	ASSERT_EQ(Point<int>(2, 1, 7), transform * p );
+}
+TEST(MatrixTests, MatrixTranslation2Test) {
+	auto Itransform = I<double>.Translated(5.0, -3.0, 2.0).Inversed();
+	Point<int> p{ -3, 4, 5 };
+
+	ASSERT_EQ(Point<int>(-8, 7, 3), Itransform * p );
+}
+TEST(MatrixTests, MatrixTranslation3Test) {
+	auto transform = I<double>.Translated(5.0, -3.0, 2.0);
+	Vector<int> v{ -3, 4, 5 };
+
+	ASSERT_EQ(v, transform * v );
+	ASSERT_EQ(v, transform.Inversed() * v );
+}
+
+
+
+TEST(MatrixTests, MatrixScaleTest) {
+	auto transform = I<double>.Scaled(2.0, 3.0, 4.0);
+	Point<int> p{ -4, 6, 8 };
+
+	ASSERT_EQ(Point<int>(-8, 18, 32), transform * p );
+}
+
+TEST(MatrixTests, MatrixScale2Test) {
+	auto transform = I<double>.Scaled(2.0, 3.0, 4.0);
+	Vector<int> v{ -4, 6, 8 };
+
+	ASSERT_EQ(Vector<int>(-8, 18, 32), transform * v );
+}
+
+TEST(MatrixTests, MatrixScale3Test) {
+	auto Itransform = I<double>.Scaled(2.0, 3.0, 4.0).Inversed();
+	Vector<int> v{ -4, 6, 8 };
+
+	ASSERT_EQ(Vector<int>(-2, 2, 2), Itransform * v );
+}
+
+#include <numbers>
+TEST(MatrixTests, MatrixRotationTest) {
+	using namespace std::numbers;
+	auto half_quarter = I<double>.RotatedX(pi/4.0);
+	auto full_quarter = I<double>.RotatedX(pi/2.0);
+	Point<double> p{ 0.0, 1.0, 0.0 };
+
+	ASSERT_EQ(Point<double>(0.0, sqrt2/2.0, sqrt2 / 2.0), half_quarter * p );
+	ASSERT_EQ(Point<double>(0.0, 0.0, 1.0), full_quarter * p );
+}
