@@ -68,7 +68,7 @@ public:
     }
 
     constexpr void toPPMFast() const  {
-        fast_io::obuf_file outFile("canvas2.ppm");
+        fast_io::obuf_file outFile("canvas.ppm");
         fast_io::io::println(outFile, "P3");
         fast_io::io::println(outFile, Width, " ", Height);
         fast_io::io::println(outFile, 255);

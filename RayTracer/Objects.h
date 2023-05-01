@@ -5,24 +5,20 @@
 #include "Auxiliary.h"
 #include <optional>
 
+#include <iostream>
 
-
-template <typename HitObject, typename T>
-struct Object
+template <typename T, typename Object>
+struct HitObject
 {
-public:
-    inline static int currID{ 0 };
-    int ID;
-
     //Material<T> material;
     Matrix<T, 4> transformation{ I<T> };
-    HitObject object;
+    Object object;
 
-    constexpr Object(HitObject obj) : object(obj) {
-        ID = currID++;
-    }
+    constexpr HitObject(Object obj) : object(obj) { // TODO: write a CTAD?
+       
+    } 
 
-    Vector<T> NormalAt(Point<T> p) {
+    constexpr Vector<T> NormalAt(Point<T> p) {
         Matrix<T, 4> inv = transformation.Inversed();
         Point<T> local_point = inv * p;
         Vector<T> local_normal = object.LocalNormalAt(local_point);
@@ -32,9 +28,9 @@ public:
         return world_normal.Normalized();
     }
 
-    std::optional<std::pair<Intersection<HitObject, T>, Intersection<HitObject, T>>> IntersectionsWith(Ray<T> const& ray) {
+    constexpr std::optional<std::pair<Intersection<Object, T>, Intersection<Object, T>>> IntersectionsWith(Ray<T> const& ray) const noexcept {
         Ray<T> r = ray.Transformed(transformation.Inversed());
-    
+        //std::cout << "Original Ray:\n\t" << ray.origin << ", " << ray.direction << "\nTd Ray:\n\t" << r.origin << ", " << r.direction << std::endl;
         return object.LocalIntersectionsWith(r);
     }
 };
@@ -60,7 +56,9 @@ public:
 
 template<typename T>
 struct Sphere {
-    std::optional<std::pair<Intersection<Sphere, T>, Intersection<Sphere, T>>> LocalIntersectionsWith(Ray<T> const& ray) {
+    constexpr std::optional<std::pair<Intersection<Sphere, T>, Intersection<Sphere, T>>> LocalIntersectionsWith(Ray<T> const& ray) const noexcept {
+
+        
         Vector<T> sphereToRay = ray.origin - Point<T>(0.0, 0.0, 0.0);
 
         double a = ray.direction.dot(ray.direction);
@@ -69,18 +67,19 @@ struct Sphere {
 
         double delta = b * b - 4 * a * c;
 
-        if (delta < 0)
+        if (delta < 0) {
             return { std::nullopt };
+        }
         else {
-            double t1 = (-b - std::sqrt(delta)) / (2.0 * a);
-            double t2 = (-b + std::sqrt(delta)) / (2.0 * a);
+            double t1 = (-b - constexpr_sqrt(delta)) / (2.0 * a);
+            double t2 = (-b + constexpr_sqrt(delta)) / (2.0 * a);
 
-            return std::pair{Intersection { *this, t1 }, Intersection{ *this, t2 } };
+            return std::optional{ std::pair{Intersection { *this, t1 }, Intersection{ *this, t2 } } };
         }
     }
 
 
-    Vector<T> LocalNormalAt(Point<T> p) {
+    constexpr Vector<T> LocalNormalAt(Point<T> p) const noexcept {
         Vector norm = (p - new Point(0, 0, 0));
         norm[0] = 0;
         return norm.Normalized();

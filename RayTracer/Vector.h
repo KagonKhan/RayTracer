@@ -53,6 +53,18 @@ struct Tuple {
     }
 };
 
+
+constexpr double constexpr_sqrt(double val) noexcept {
+    double curr = val;
+    double prev = 0;
+
+    while (curr != prev) {
+        prev = std::exchange(curr, 0.5 * (curr + val / curr));
+    }
+
+    return curr;
+}
+
 template <typename T>
 struct Vector : public Tuple<T> {
     using Tuple<T>::data;
@@ -63,7 +75,7 @@ struct Vector : public Tuple<T> {
 
 
     constexpr T magnitude() const noexcept {
-        return std::sqrt(data[0] * data[0] + data[1] * data[1] + data[2] * data[2] + data[3] * data[3]);
+        return constexpr_sqrt(data[0] * data[0] + data[1] * data[1] + data[2] * data[2] + data[3] * data[3]);
     }
     constexpr Vector normalized() const noexcept {
         return *this / magnitude();

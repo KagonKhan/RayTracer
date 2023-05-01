@@ -6,8 +6,8 @@
 template <typename T>
 struct Ray
 {
-    const Point<T> origin;
-    const Vector<T> direction;
+     Point<T> origin;
+     Vector<T> direction;
 
     constexpr Point<T> positionedAt(T t) const noexcept {
         return direction * t + origin;
@@ -21,12 +21,10 @@ struct Ray
 
 template<typename HitObject, typename T>
 struct Intersection {
-    std::optional<HitObject> obj; // TODO: reference instead of copy?
+    HitObject const& obj; // TODO: reference instead of copy?
     T t; // maybe hold a vector here, if it wont leak to runtime
 
-    constexpr Intersection(HitObject const& obj, T t) noexcept {
-        this->obj = obj;
-        this->t = t;
+    constexpr Intersection(HitObject const& obj, T t) noexcept : obj(obj), t(t) {
     }
 
 
@@ -87,9 +85,10 @@ struct Intersection {
 
 
 template <typename HitObject, typename T>
-bool operator==(Intersection<HitObject, T> const& lhs, Intersection<HitObject, T> const& rhs) noexcept {
+constexpr bool operator==(Intersection<HitObject, T> const& lhs, Intersection<HitObject, T> const& rhs) noexcept {
     return  lhs.t == rhs.t;
 }
+
 #include <vector>
 template<typename HitObject, typename T, template<typename, typename> typename... Intersections>
 constexpr std::optional<Intersection<HitObject, T>> Hit(Intersections<HitObject, T>... xs) noexcept {
